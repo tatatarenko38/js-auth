@@ -1,0 +1,8 @@
+<div class="field">
+	<label for="{{name}}" class="field__label">{{label}}</label>
+	{{!-- через атрибут oninput
+	- тобто дії при введенні - визиваємо параметр action
+	з контейнера signup index.hbs тобто signupForm.change--}}
+	<input oninput="{{action}}(this.name, this.value)" type="{{type}}" class="field__input" name="{{name}}"
+		placeholder="{{placeholder}}">
+</div>

@@ -1,7 +1,3 @@
 @use '../../style' as s;
 
-main {
-	background: s.color(dark);
-	color: s.color(light);
-	padding: s.space(4);
-} 
+@use '../../style/form.scss' as form;

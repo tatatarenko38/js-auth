@@ -18,7 +18,13 @@ router.get('/signup', function (req, res) {
     // вказуємо назву контейнера
     name: 'signup',
     // вказуємо назву компонентів
-    component: [],
+    component: [
+      'back-button',
+      'field',
+      'field-password',
+      'field-checkbox',
+      'field-select',
+    ],
 
     // вказуємо назву сторінки
     title: 'Signup page',
