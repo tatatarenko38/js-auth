@@ -43,6 +43,15 @@ class User {
     const user = new User(data)
 
     this.#list.push(user)
+    // щоб бачити доданого користувача
+    console.log(this.#list)
+  }
+
+  // буде приймати користувача по email
+  static getByEmail(email) {
+    return this.#list.find(
+      (user) => user.email === email || null,
+    )
   }
 }
 

@@ -7,6 +7,8 @@
 html {
 	min-height: 100%;
 	padding: 64px 0;
+	// на всю висоту екрану
+	display: grid;
 }
 
 body {
