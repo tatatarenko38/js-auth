@@ -13,7 +13,7 @@ class User {
 
   //створюємо конструктор та підключаємо значення
   constructor({ email, password, role }) {
-    this.email = email
+    this.email = String(email).toLowerCase()
     this.password = password
     //під'єднуємо з User.#convertRole()
     this.role = User.#convertRole(role)
@@ -50,7 +50,8 @@ class User {
   // буде приймати користувача по email
   static getByEmail(email) {
     return this.#list.find(
-      (user) => user.email === email || null,
+      (user) =>
+        user.email === String(email).toLowerCase() || null,
     )
   }
 }
