@@ -11,9 +11,8 @@ class Confirm {
   }
 
   //генерує код з 4 чисел
-  static generateCode = () => {
+  static generateCode = () =>
     Math.floor(Math.random()) * 9000 + 1000
-  }
 
   //створюємо об'єкт кода та через TimeOut
   static create = (data) => {

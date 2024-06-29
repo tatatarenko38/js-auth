@@ -11,12 +11,19 @@ class User {
   // список створених користувачів
   static #list = []
 
+  //для  id
+  static #count = 1
+
   //створюємо конструктор та підключаємо значення
   constructor({ email, password, role }) {
+    this.id = User.#count++
+
     this.email = String(email).toLowerCase()
-    this.password = password
+    this.password = String(password)
     //під'єднуємо з User.#convertRole()
     this.role = User.#convertRole(role)
+
+    this.isConfirm = false
   }
 
   // конвертує перевіряє роль
@@ -45,6 +52,7 @@ class User {
     this.#list.push(user)
     // щоб бачити доданого користувача
     console.log(this.#list)
+    return user
   }
 
   // буде приймати користувача по email

@@ -1,27 +1,21 @@
 //батькiвський клас Form
 
+import { Form } from '../../script/form'
+
 import {
-  Form,
-  REG_EXP_EMAIL,
-  REG_EXP_PASSWORD,
-} from '../../script/form'
+  saveSession,
+  getTokenSession,
+  getSession,
+} from '../../script/session'
 
-import { saveSession } from '../../script/session'
-
-class RecoveryConfirmForm extends Form {
+class SignupConfirmForm extends Form {
   FIELD_NAME = {
     CODE: 'code',
-    PASSWORD: 'password',
-    PASSWORD_AGAIN: 'passwordAgain',
   }
 
   FIELD_ERROR = {
     IS_EMPTY: 'Введіть значення в поле',
     IS_BIG: 'Дуже довге значення, приберіть зайве',
-    PASSWORD:
-      'Пароль повинен містити не меньше 8 символів, включаючи хоча б одну цифру, малу і велику літеру',
-    PASSWORD_AGAIN:
-      'Ваш другий пароль не збігається з першим',
   }
 
   // //перевірка валідації
@@ -32,24 +26,6 @@ class RecoveryConfirmForm extends Form {
 
     if (String(value).length > 30) {
       return this.FIELD_ERROR.IS_BIG
-    }
-
-    //пароль так же
-    if (name === this.FIELD_NAME.PASSWORD) {
-      // якщо значення некоректне, повертаємо помилку
-      if (!REG_EXP_PASSWORD.test(String(value))) {
-        return this.FIELD_ERROR.PASSWORD
-      }
-    }
-
-    // перевірка чи пароль1 === пароль2
-    if (name === this.FIELD_NAME.PASSWORD_AGAIN) {
-      if (
-        String(value) !==
-        this.value[this.FIELD_NAME.PASSWORD]
-      ) {
-        return this.FIELD_ERROR.PASSWORD_AGAIN
-      }
     }
   }
 
@@ -67,7 +43,7 @@ class RecoveryConfirmForm extends Form {
       //обгортаємо try(запит) catch(повертає помилку)
       try {
         //y fetch() пишемо шлях до запиту та об'єкт с параметрами
-        const res = await fetch('/recovery-confirm', {
+        const res = await fetch('/signup-confirm', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -97,16 +73,44 @@ class RecoveryConfirmForm extends Form {
 
   //повертає JSON.stringify з підготовленими полями
   // які нам потрібні на backend для відправки на сервер
+  // можемо відправити токен разом з данними
   convertData = () => {
     return JSON.stringify({
       [this.FIELD_NAME.CODE]: Number(
         this.value[this.FIELD_NAME.CODE],
       ),
-      [this.FIELD_NAME.PASSWORD]:
-        this.value[this.FIELD_NAME.PASSWORD],
+      token: getTokenSession(),
     })
   }
 }
 // cтворюємо екземпляр, щоб відбулося підтягування
 //полів з class Form
-window.recoveryConfirmForm = new RecoveryConfirmForm()
+window.signupConfirmForm = new SignupConfirmForm()
+
+//якщо користувач має підтвердження акакунту
+//то він не може перейти на цю сторінку
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    if (window.session) {
+      if (window.session.user.isConfirm) {
+        location.assign('/')
+      }
+    } else {
+      location.assign('/')
+    }
+    //просто будемо отримувати помилку, але не будемо її
+    //оброблювати
+  } catch (e) {}
+
+  document
+    .querySelector('#renew')
+    .addEventListener('click', (e) => {
+      e.preventDefault()
+
+      const session = getSession()
+
+      location.assign(
+        `/signup-confirm?renew=true&email=${session.user.email}`,
+      )
+    })
+})
