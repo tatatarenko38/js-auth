@@ -57,11 +57,23 @@ class User {
 
   // буде приймати користувача по email
   static getByEmail(email) {
-    return this.#list.find(
-      (user) =>
-        user.email === String(email).toLowerCase() || null,
+    return (
+      this.#list.find(
+        (user) =>
+          user.email === String(email).toLowerCase(),
+      ) || null
     )
   }
+
+  // буде знаходити користувача по id
+  static getById(id) {
+    return (
+      this.#list.find((user) => user.id === Number(id)) ||
+      null
+    )
+  }
+
+  static getList = () => this.#list
 }
 
 module.exports = { User }
